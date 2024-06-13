@@ -1,5 +1,5 @@
 /** Mad's Isleward MiniMap Addon
- *  - Version: 0.0.1
+ *  - Version: 0.0.2
  */
 addons.register({ ADDON_NAME: "Mads Super Addon"
     , mapScale: 4
@@ -115,8 +115,8 @@ addons.register({ ADDON_NAME: "Mads Super Addon"
         ctx.scale(this.mapScale, this.mapScale);
         ctx.clearRect(0, 0, this.uiMap[0].width, this.uiMap[0].height);
 
-        for (i = 0; i < this.collisionMap.length; i++) {
-            for (j = 0; j < this.collisionMap[i].length; j++) {
+        for (let i = 0; i < this.collisionMap.length; i++) {
+            for (let j = 0; j < this.collisionMap[i].length; j++) {
                 if (this.collisionMap[j][i]) {
                     // Collision
                     ctx.fillStyle = "rgba(117, 123, 146, 0.2)";
@@ -128,7 +128,7 @@ addons.register({ ADDON_NAME: "Mads Super Addon"
             }
         }
         this.objectsModule.objects.forEach((obj) => {
-            if (obj.destroyed) {
+            if (obj.destroyed || !obj.updateVisibility) {
                 return;
             }
             this.drawMapItem(ctx, obj);
@@ -164,7 +164,7 @@ addons.register({ ADDON_NAME: "Mads Super Addon"
         return ["hidden", obj.name];
     }
     , getMapItemColor: function(itemTypeInfo) {
-        if (typeof itemTypeInfo == "object" && itemTypeInfo.updateVisibility) {
+        if (typeof itemTypeInfo == "object") {
             itemTypeInfo = this.getItemType(itemTypeInfo);
         }
         if (typeof itemTypeInfo == "string") {
